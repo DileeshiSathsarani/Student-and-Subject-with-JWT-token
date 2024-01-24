@@ -39,7 +39,7 @@ namespace WebApplication1.DTOs.Responses
             public string password { get; set; }
         }
 
-        public class ListStoriesResponse
+        /*public class ListStoriesResponse
         {
             public List<StoryResponseItem> Stories { get; set; }
         }
@@ -51,6 +51,6 @@ namespace WebApplication1.DTOs.Responses
             public string Description { get; set; }
             public DateTime CreatedAt { get; set; }
             public DateTime UpdatedAt { get; set; }
-        }
+        }*/
     }
 }

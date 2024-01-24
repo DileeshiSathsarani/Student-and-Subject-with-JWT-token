@@ -4,10 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WebApplication1.Models
 {
     public class LoginDetailModel
-    {
-        public int Id { get; set; }
-        public string username { get; set; }
+    {   
+        public long Id { get; set; }
 
+        [Required]
+        public string user_name { get; set; }
+        [Required]
         public string password { get; set; }
         public string token { get; set; }
         public DateTime CreatedAt { get; set; }

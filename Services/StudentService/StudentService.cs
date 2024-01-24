@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Middleware.DTOs.Requests;
-using Middleware.Helpers.Utils;
+using WebApplication1.DTOs.Requests;
+using WebApplication1.Helpers.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebApplication1.Data;
 using WebApplication1.DTOs;
-using WebApplication1.DTOs.Requests;
 using WebApplication1.DTOs.Responses;
 using WebApplication1.Models;
+using WebApplication1.Helpers.Utils;
 
 namespace WebApplication1.Services.StudentService
 {
@@ -33,7 +33,8 @@ namespace WebApplication1.Services.StudentService
                 newStudent.address = request.address;
                 newStudent.email = request.email;
                 newStudent.contact_number = request.contact_number;
-
+                newStudent.user_name = request.user_name;
+                newStudent.password = request.password; 
                 using (context)
                 {
                     context.Add(newStudent);
@@ -85,7 +86,9 @@ namespace WebApplication1.Services.StudentService
                         last_name = student.last_name,
                         address = student.address,
                         email = student.email,
-                        contact_number = student.contact_number
+                        contact_number = student.contact_number,
+                        user_name = student.user_name,
+
                     }));
 
                     var paginationInfo = new
@@ -188,11 +191,14 @@ namespace WebApplication1.Services.StudentService
 
                     if (filteredStudent != null)
                     {
+                        filteredStudent.Id  = filteredStudent.Id;    
                         filteredStudent.first_name = request.first_name;
                         filteredStudent.last_name = request.last_name;
                         filteredStudent.address = request.address;
                         filteredStudent.email = request.email;
                         filteredStudent.contact_number = request.contact_number;
+                        filteredStudent.user_name = request.user_name;
+                        filteredStudent.password = request.password;
 
                         context.SaveChanges();
 
@@ -286,6 +292,7 @@ namespace WebApplication1.Services.StudentService
                 {
                     context.Students.ToList().ForEach(student => Student.Add(new StudentDTO
                     {
+                        id = student.Id,
                         first_name = student.first_name,
                         last_name = student.last_name,
                         address = student.address,
@@ -322,13 +329,10 @@ namespace WebApplication1.Services.StudentService
 
             try
             {
-
-                StudentModel student = context.Students.FirstOrDefault(u => u.first_name == request.username && u.password == request.password);
-
+                StudentModel student = context.Students.FirstOrDefault(u => u.user_name == request.user_name && u.password == request.password);
 
                 if (student != null)
                 {
-
                     string jwtToken = JwtUtils.GenerateJwtToken(student);
 
                     response = new BaseResponse
@@ -358,6 +362,9 @@ namespace WebApplication1.Services.StudentService
                 return response;
             }
         }
+
+
+
         public BaseResponse RegisterUser(RegisterUserRequest request)
         {
             BaseResponse response;
@@ -365,7 +372,7 @@ namespace WebApplication1.Services.StudentService
             try
             {
 
-                if (context.Students.Any(u => u.first_name == request.user_name || u.email == request.email))
+                if (context.Students.Any(u => u.first_name == request.first_name || u.email == request.email))
                 {
                     response = new BaseResponse
                     {
@@ -378,12 +385,13 @@ namespace WebApplication1.Services.StudentService
 
                     StudentModel newUser = new StudentModel
                     {
-                        first_name = request.user_name,
+                        first_name = request.first_name,
                         password = request.password,         
                         email = request.email,
                         address = request.address,
                         contact_number = request.contact_number,
                         last_name = request.last_name,
+                        user_name = request.user_name,
 
 
                     };
@@ -406,8 +414,6 @@ namespace WebApplication1.Services.StudentService
             catch (Exception ex)
             {
                 Console.WriteLine($"DbUpdateException: {ex.Message}");
-
-                // Log the specific details of the inner exception
                 Exception innerException = ex.InnerException;
                 while (innerException != null)
                 {

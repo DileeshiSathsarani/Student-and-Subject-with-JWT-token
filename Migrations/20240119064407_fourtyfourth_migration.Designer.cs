@@ -11,8 +11,8 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240115121028_thirtysixth_migration")]
-    partial class thirtysixth_migration
+    [Migration("20240119064407_fourtyfourth_migration")]
+    partial class fourtyfourth_migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,12 +34,14 @@ namespace WebApplication1.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("password")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("token")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("username")
+                    b.Property<string>("user_name")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -49,20 +51,30 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Relationship", b =>
                 {
-                    b.Property<int>("StudentId")
+                    b.Property<int>("StudentsId")
                         .HasColumnType("int");
 
-                    b.Property<long>("SubjectId1")
+                    b.Property<long>("SubjectsId")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
 
                     b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
-                    b.HasKey("StudentId", "SubjectId1");
+                    b.Property<long?>("SubjectId1")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("StudentsId", "SubjectsId");
+
+                    b.HasIndex("StudentId");
 
                     b.HasIndex("SubjectId1");
 
-                    b.ToTable("Relationships");
+                    b.HasIndex("SubjectsId");
+
+                    b.ToTable("Relationship");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.StudentModel", b =>
@@ -96,6 +108,7 @@ namespace WebApplication1.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("user_name")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -129,9 +142,19 @@ namespace WebApplication1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WebApplication1.Models.StudentModel", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebApplication1.Models.SubjectModel", "Subject")
                         .WithMany()
-                        .HasForeignKey("SubjectId1")
+                        .HasForeignKey("SubjectId1");
+
+                    b.HasOne("WebApplication1.Models.SubjectModel", null)
+                        .WithMany()
+                        .HasForeignKey("SubjectsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

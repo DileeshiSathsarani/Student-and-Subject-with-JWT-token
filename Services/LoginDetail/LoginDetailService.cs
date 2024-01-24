@@ -8,7 +8,7 @@ using WebApplication1.DTOs.Responses;
 using WebApplication1.DTOs;
 using WebApplication1.Models;
 
-namespace Middleware.Services.LoginDetail
+namespace WebApplication1.Services.LoginDetail
 {
     public class LoginDetailService : ILoginDetailService
     {
@@ -26,11 +26,14 @@ namespace Middleware.Services.LoginDetail
 
             try
             {
-                StudentModel authenticatedUser = AuthenticateUser(request.username, request.password);
+                StudentModel authenticatedUser = AuthenticateUser(request.user_name, request.password);
 
                 if (authenticatedUser != null)
                 {
+                    authenticatedUser.user_name = request.user_name;
+                    authenticatedUser.password = request.password;
 
+                    context.SaveChanges();
                     LoginDetailModel newLogin = new LoginDetailModel
                     {
                         Id = authenticatedUser.Id,
@@ -71,9 +74,9 @@ namespace Middleware.Services.LoginDetail
             }
         }
 
-        private StudentModel AuthenticateUser(string username, string password)
+        private StudentModel AuthenticateUser(string user_name, string password)
         {
-            if (username == "validUser" && password == "validPassword")
+            if (user_name == "validUser" && password == "validPassword")
             {
                 return new StudentModel
                 {
@@ -99,7 +102,7 @@ namespace Middleware.Services.LoginDetail
 
                     if (filteredLogin != null)
                     {
-                        logins.username = filteredLogin.username;
+                        logins.user_name = filteredLogin.user_name;
                         logins.password = filteredLogin.password;
 
                     }

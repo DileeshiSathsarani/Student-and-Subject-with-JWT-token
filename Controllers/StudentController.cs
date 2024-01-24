@@ -7,12 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebApplication1.Data;
 using WebApplication1.DTOs;
 using WebApplication1.Services.SubjectService;
 using Microsoft.AspNetCore.Authorization;
-using Middleware.DTOs.Requests;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
@@ -37,6 +36,7 @@ namespace WebApplication1.Controllers
             return StatusCode(response.status_code, response);
         }
 
+
         [HttpPost("login")]
         public IActionResult AuthenticateUser(AuthenticateRequest request)
         {
@@ -46,16 +46,16 @@ namespace WebApplication1.Controllers
         }
 
 
-      /*  [HttpPost("save")]
+        /* [HttpPost("save")]
 
-        public BaseResponse CreateStudent(CreateStudentRequest request)
-        {
-            return studentService.CreateStudent(request);
-        }*/
+           public BaseResponse CreateStudent(CreateStudentRequest request)
+           {
+               return studentService.CreateStudent(request);
+           }*/
 
-
+       
         [HttpGet("id")]
-
+       
         public BaseResponse GetStudentById()
         {
             return studentService.StudentList();
@@ -74,41 +74,39 @@ namespace WebApplication1.Controllers
         }
 
 
-        // GET: api/product/search?productName=yourSearchTerm
-        [HttpGet("search")]
-        public async Task<IActionResult> SearchProducts([FromQuery] string studentName)
+        [HttpGet("search/{id}")]
+        public async Task<IActionResult> SearchProducts(long id)
         {
             try
             {
-                if (string.IsNullOrEmpty(studentName))
+                if (id <= 0)
                 {
-                    return BadRequest("Search term is required.");
+                    return BadRequest("Search term is required and must be a positive integer.");
                 }
 
-                var filteredProducts = await _context.Students
-                    .Where(s => EF.Functions.Like(s.first_name, $"%{studentName}%"))
-                    .ToListAsync();
+                var filteredStudent = await _context.Students
+                    .FirstOrDefaultAsync(s => EF.Functions.Like(s.Id.ToString(), $"%{id}%"));
 
-                if (filteredProducts.Any())
+                if (filteredStudent != null)
                 {
-                    return Ok(filteredProducts);
+                    return Ok(filteredStudent);
                 }
                 else
                 {
-                    return NotFound("No products found for the given search term.");
+                    return NotFound($"No student found for the given search term: {id}");
                 }
             }
             catch (Exception ex)
             {
-                // Log the exception and return an error response
                 return StatusCode(500, $"Internal Server Error: {ex.Message}");
             }
         }
 
+
+
         [HttpGet("{id}/subjects")]
         public IEnumerable<SubjectDTO> GetStudentSubjects(long id)
         {
-           
             try
             {
                 var student = _context.Students
@@ -132,10 +130,11 @@ namespace WebApplication1.Controllers
             }
             catch (Exception ex)
             {
-
                 throw new Exception($"Internal Server Error: {ex.Message}");
             }
         }
+
+
 
         [HttpGet("list")]
         public BaseResponse StudentList([FromQuery] int page = 1, [FromQuery] int pageSize = 10)

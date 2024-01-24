@@ -7,10 +7,9 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using WebApplication1.Data;
 using WebApplication1.Models;
-using WebApplication1.Data;
-using WebApplication1.Models;
 
-namespace Middleware.Helpers.Utils
+
+namespace WebApplication1.Helpers.Utils
 {
     public static class JwtUtils
     {

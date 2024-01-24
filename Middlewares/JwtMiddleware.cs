@@ -3,15 +3,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using WebApplication1.DTOs.Responses;
-using Middleware.Helpers.Utils;
-using Middleware.Middlewares;
-using static Middleware.Helpers.Utils.AuthService;
+using WebApplication1.Middlewares;
+using static WebApplication1.Helpers.Utils.AuthService;
 using WebApplication1.DTOs;
 using System.Net;
-using WebApplication1.DTOs.Responses;
-using WebApplication1.DTOs;
+using WebApplication1.Helpers.Utils;
 
-namespace Middleware.Middlewares
+namespace WebApplication1.Middlewares
 {
 
     public class JwtMiddleware

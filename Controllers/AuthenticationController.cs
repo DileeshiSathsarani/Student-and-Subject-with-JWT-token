@@ -4,15 +4,15 @@ using WebApplication1.DTOs.Responses;
 using WebApplication1.Services;
 using WebApplication1.Services.StudentService;
 using WebApplication1.DTOs.Responses;
-using Middleware.Services.LoginDetail;
+using WebApplication1.Services.LoginDetail;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Middleware.Controllers
+namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
-        
+
     {
         private readonly ILoginDetailService LoginDetailService;
 
@@ -23,11 +23,11 @@ namespace Middleware.Controllers
 
         }
 
-       /* [HttpPost("authenticate")]
-        public IActionResult CreateLogin(AuthenticateRequest request)
-        {
-            BaseResponse response = LoginDetailService.CreateLogin(request);
-            return StatusCode(response.status_code, response);
-        }*/
+        /*[HttpPost("authenticate")]
+         public IActionResult CreateLogin(AuthenticateRequest request)
+         {
+             BaseResponse response = LoginDetailService.CreateLogin(request);
+             return StatusCode(response.status_code, response);
+         }*/
     }
 }

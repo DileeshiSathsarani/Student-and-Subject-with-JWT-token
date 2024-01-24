@@ -11,10 +11,7 @@ namespace WebApplication1.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; } // primary key 
-
-        [Required]
-        public string password { get; set; }
+        public long Id { get; set; } // primary key 
 
         [Required]
         public string first_name { get; set; }
@@ -28,7 +25,11 @@ namespace WebApplication1.Models
         [Required]
         public string email { get; set; }
 
+        [Required]
         public string user_name { get; set; }
+
+        [Required]
+        public string password { get; set; }
         [Required]
         public string contact_number { get; set; }
 

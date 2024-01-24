@@ -6,17 +6,15 @@ using WebApplication1.Data;
 using WebApplication1.DTOs.Requests;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
-using Middleware.Helpers.Utils;
+using WebApplication1.Helpers.Utils;
 using System.Security.Cryptography;
 using System.Text;
 using WebApplication1.DTOs;
-using WebApplication1.Data;
-using WebApplication1.DTOs.Requests;
 using WebApplication1.DTOs.Responses;
 using WebApplication1.Models;
 using WebApplication1.Helpers.Utils;
 
-namespace Middleware.Helpers.Utils
+namespace WebApplication1.Helpers.Utils
 {
     public class AuthService
     {
@@ -31,7 +29,7 @@ namespace Middleware.Helpers.Utils
         {
             try
             {
-                StudentModel? student = DbContext.Students.Where(u => u.user_name == request.username).FirstOrDefault();
+                StudentModel? student = DbContext.Students.Where(u => u.user_name == request.user_name).FirstOrDefault();
 
                 if (student == null)
                 {
@@ -72,6 +70,8 @@ namespace Middleware.Helpers.Utils
             {
                 return new BaseResponse { status_code = StatusCodes.Status500InternalServerError, data = new MessageDTO(ex.Message) };
             }
+
+
         }
     }
 }

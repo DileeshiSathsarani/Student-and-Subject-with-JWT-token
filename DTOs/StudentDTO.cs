@@ -5,6 +5,7 @@ namespace WebApplication1.DTOs
     public class StudentDTO
     {
         
+        public long id { get; set; }
         [Required]
         public string first_name { get; set; }
 
@@ -19,5 +20,10 @@ namespace WebApplication1.DTOs
 
         [Required]
         public string contact_number { get; set; }
+
+        public string user_name { get; set; }
+
+        [Required]
+        public string password { get; set; }
     }
 }

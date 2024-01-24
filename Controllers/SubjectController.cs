@@ -42,7 +42,7 @@ namespace WebApplication1.Controllers
             return subjectService.SubjectList();
         }
 
-        [HttpGet()]
+        [HttpGet("student")]
 
         public BaseResponse GetStudentById()
         {
@@ -61,7 +61,7 @@ namespace WebApplication1.Controllers
             return subjectService.DeleteSubjectById(id);
         }
 
-        /*[HttpGet("{id}/subjects")]
+        [HttpGet("{id}/subjects")]
         public IEnumerable<StudentDTO> GetStudentSubjects(long id)
         {
             try
@@ -99,7 +99,7 @@ namespace WebApplication1.Controllers
             {
                 throw new Exception($"Internal Server Error: {ex.Message}");
             }
-        }*/
+        }
 
     }
 }

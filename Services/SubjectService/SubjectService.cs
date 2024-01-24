@@ -66,6 +66,7 @@ namespace WebApplication1.Services.SubjectService
                 {
                     context.Subjects.ToList().ForEach(subject => Subject.Add(new SubjectDTO
                     {
+                        
                         subject_code =subject.subject_code,
                         subject_name =subject.subject_name,
 
@@ -108,6 +109,7 @@ namespace WebApplication1.Services.SubjectService
 
                     if (filteredSubject != null)
                     {
+                        subject.Id = filteredSubject.Id;
                         subject.subject_code = filteredSubject.subject_code;
                         subject.subject_name = filteredSubject.subject_name;
                         
@@ -152,7 +154,7 @@ namespace WebApplication1.Services.SubjectService
             }
         }
 
-        public BaseResponse UpdateSubjectById(long id, UpdateSubjectRequest request)
+        public BaseResponse UpdateSubjectById(long subject_code, UpdateSubjectRequest request)
         {
             BaseResponse response;
 
@@ -161,7 +163,7 @@ namespace WebApplication1.Services.SubjectService
 
                 using (context)
                 {
-                    SubjectModel filteredSubject = context.Subjects.Where(subject => subject.subject_code == id).FirstOrDefault();
+                    SubjectModel filteredSubject = context.Subjects.Where(subject => subject.subject_code == subject_code).FirstOrDefault();
 
                     if (filteredSubject != null)
                     {
@@ -203,7 +205,7 @@ namespace WebApplication1.Services.SubjectService
             }
         }
 
-        public BaseResponse DeleteSubjectById(long id)
+        public BaseResponse DeleteSubjectById(long subject_code)
         {
             BaseResponse response;
 
@@ -212,7 +214,7 @@ namespace WebApplication1.Services.SubjectService
                 using (context)
                 {
 
-                    SubjectModel subjectToDelete = context.Subjects.Where(subject => subject.subject_code == id).FirstOrDefault();
+                    SubjectModel subjectToDelete = context.Subjects.Where(subject => subject.subject_code == subject_code).FirstOrDefault();
 
                     if (subjectToDelete != null)
                     {
@@ -231,7 +233,7 @@ namespace WebApplication1.Services.SubjectService
                         response = new BaseResponse
                         {
                             status_code = StatusCodes.Status400BadRequest,
-                            data = new { message = "No student found" }
+                            data = new { message = "No subject found" }
                         };
                     }
                 }

@@ -7,7 +7,7 @@ namespace WebApplication1.DTOs
         public string token { get; set; }
 
         [Required]
-        public string username { get; set; }
+        public string user_name { get; set; }
 
         [Required]
         public string password { get; set; }
